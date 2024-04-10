@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 echo "Running Lab 2 Step 1"
 echo " "
 ./1  

@@ -18,7 +18,7 @@ void *thread(void *arg) {
     struct ThreadData data = *(struct ThreadData *)arg;
     int i;
     for (i = 0; i < 10; i++) {
-        printf("I am the child thread %d displaying iteration %d\n",
+        printf("I am child thread #%d displaying iteration %d\n",
                data.thread_number, i);
         usleep(data.n);
     }
