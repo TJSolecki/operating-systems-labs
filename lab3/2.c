@@ -1,3 +1,8 @@
+// Name: Thomas Solecki
+// Date: 4/16/2024
+// Title: Lab3 – Step 1
+// Description: This program demonstrates the usage of pipe with user provided
+// input
 /*
  * Observations:
  * When I run the program and provide arguments the program first prints the

@@ -1,3 +1,8 @@
+// Date: 4/16/2024
+// Name: Thomas Solecki
+// Title: Lab3 – Step 4
+// Description: This program demonstrates piping the output from one unix
+// program into another
 #include <sys/wait.h>
 #include <unistd.h>
 

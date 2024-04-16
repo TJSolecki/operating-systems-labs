@@ -1,3 +1,8 @@
+// Name: Thomas Solecki
+// Date: 4/16/2024
+// Title: Lab3 – Step 1
+// Description: This program demonstrates the usage of pipe with unix processes
+
 /*
  * Observations:
  * When I run the program in a small terminal window I get a scrollable view of
@@ -6,8 +11,6 @@
  * and does not show "more" at the bottom of the terminal.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
 

@@ -1,3 +1,9 @@
+// Date: 4/16/2024
+// Name: Thomas Solecki
+// Title: Lab3 – Step 6
+// Description: This program demonstrates using shared memory
+// producer-consumer communication between processes
+
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,13 +19,12 @@
 #define MSG_SIZE 256
 
 struct info {
-    long mtype;           /* Message type. */
+    int written;          /* Flag indicating if the message has been written*/
     char mtext[MSG_SIZE]; /* Message text. */
 };
 
 int main(int argc, char *argv[]) {
     key_t key = 10;
-    struct info message;
 
     // Create a shared memory segment
     int id = shmget(key, SHM_SIZE, IPC_CREAT | 0666);
@@ -31,48 +36,34 @@ int main(int argc, char *argv[]) {
     }
 
     // Attach the shared memory segment
-    char *shmaddr = shmat(id, NULL, 0);
-    if (shmaddr == (char *)-1) {
+    struct info *shmaddr = (struct info *)shmat(id, NULL, 0);
+    if (shmaddr == (void *)-1) {
         printf("ERROR: There was an issue attaching to the shared memory "
                "segment\n");
         exit(1);
     }
 
-    // Create a message queue
-    int msq_id = msgget(key, IPC_CREAT | 0644);
+    shmaddr->written = 0;
 
     if (fork() != 0) {
+        while (1) {
+            // Check if the message has been written
+            if (shmaddr->written) {
+                printf("Consumed message: %s", shmaddr->mtext);
+
+                break;
+            }
+        }
+    } else {
         printf("This is the producer process for the message queue\n\n");
 
         printf("Provide a message to send to the consumer:\n");
-        fgets(message.mtext, MSG_SIZE, stdin);
-        message.mtype = 1;
+        fgets(shmaddr->mtext, MSG_SIZE, stdin);
+        printf("Writing to shared memory: %s\n", shmaddr->mtext);
+        shmaddr->written = 1;
 
-        if (msgsnd(msq_id, &message, sizeof(message), 0) == -1) {
-            printf("ERROR: could not send message\n");
-            exit(1);
-        }
-
-        printf("Writing to shared memory: %s\n", message.mtext);
-        strncpy(shmaddr, message.mtext, SHM_SIZE);
         exit(0);
-    } else {
-        int running = 1;
-        while (running) {
-            if (msgrcv(msq_id, &message, sizeof(message), 1, 0) == -1) {
-                printf("ERROR: issue recieving message from message queue\n");
-                exit(1);
-            }
-
-            // Check to see if a message has been recieved
-            if (strcmp(message.mtext, "") != 0) {
-                printf("\nConsumer child process\n");
-                printf("Recived downstream: %s", message.mtext);
-                running = 0;
-                continue;
-            }
-            exit(0);
-        }
     }
+    shmdt(shmaddr);
     return 0;
 }

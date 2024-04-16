@@ -1,3 +1,9 @@
+// Name: Thomas Solecki
+// Date: 4/16/2024
+// Title: Lab3 – Step 3
+// Description: This program demonstrates the usage of pipe with a unix program
+// on the upstream end of a pipe and printing to standard out on the downstream
+// end of the pipe
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
