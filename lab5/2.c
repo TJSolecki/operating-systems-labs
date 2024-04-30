@@ -8,20 +8,22 @@
 #include <fcntl.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 #define NTHREADS 10
+#define SIGINT 2
 
 void *go(void *arg);
-// void cleanup(int sigtype);
+void cleanup(int sigtype);
 
 pthread_t threads[NTHREADS];
 pthread_mutex_t mutex;
 
 int main() {
-    // signal(SIGINT,cleanup);
+    signal(SIGINT, cleanup);
     if (pthread_mutex_init(&mutex, NULL) != 0) {
         perror("Could not create mutex");
         exit(1);
@@ -47,8 +49,11 @@ void *go(void *arg) {
     pthread_exit(0);
 }
 
-/*void cleanup(int sigtype){
-    sem_unlink("mutex");
+void cleanup(int sigtype) {
+    if (pthread_mutex_destroy(&mutex) != 0) {
+        perror("Could not destroy mutex");
+        exit(1);
+    }
     printf("\n Terminating\n");
     exit(0);
-}*/
+}
