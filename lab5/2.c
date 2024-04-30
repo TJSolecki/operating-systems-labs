@@ -1,4 +1,10 @@
-// Thread Synchronization - Semaphores
+// Name: Thomas Solecki
+// Date: 4/30/2024
+// Title: Lab5 – Step 2
+// Description: This program demonstrates how to use mutex locks to syncronize
+// threads
+
+// Thread Synchronization - Mutex Locks
 #include <fcntl.h>
 #include <pthread.h>
 #include <semaphore.h>

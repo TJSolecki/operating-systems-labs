@@ -1,8 +1,10 @@
-// Shared data: semaphores called full, empty, and mutex
-// pool of n buffers, each can hold one item
-// mutex semaphore provides mutual exclusion to the buffer pool
-// empty and full semaphores count the number of empty and full buffers
-// Initially: full = 0, empty = n, mutex = 1
+// Name: Thomas Solecki
+// Date: 4/30/2024
+// Title: Lab5 – Step 4
+// Description: This program demonstrates how to use mutex locks and conditional
+// variables to syncronize a producer and consumer thread that use a shared
+// buffer
+
 #include <fcntl.h>
 #include <pthread.h>
 #include <semaphore.h>
@@ -10,10 +12,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define N 5
-
+int N;
 int in = 0, out = 0;
-int buffer[N];
+int *buffer;
 pthread_mutex_t mutex;
 pthread_cond_t empty = PTHREAD_COND_INITIALIZER,
                full = PTHREAD_COND_INITIALIZER;
@@ -70,7 +71,15 @@ void *consumer() {
     return NULL;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "usage: %s <N>\n", argv[0]);
+        exit(1);
+    }
+
+    N = atoi(argv[1]);
+    buffer = malloc(sizeof(int) * N);
+
     if (pthread_mutex_init(&mutex, NULL) != 0) {
         perror("Could not create mutex");
         exit(1);
@@ -81,6 +90,8 @@ int main() {
 
     pthread_join(producer_thread_id, NULL);
     pthread_join(consumer_thread_id, NULL);
+
+    free(buffer);
 
     if (pthread_mutex_destroy(&mutex) != 0) {
         perror("Could not destroy mutex");

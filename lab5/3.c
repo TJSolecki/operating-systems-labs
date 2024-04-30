@@ -1,3 +1,9 @@
+// Name: Thomas Solecki
+// Date: 4/30/2024
+// Title: Lab5 – Step 3
+// Description: This program demonstrates how to use semaphores to syncronize a
+// producer and consumer thread that use a shared buffer
+
 // Shared data: semaphores called full, empty, and mutex
 // pool of n buffers, each can hold one item
 // mutex semaphore provides mutual exclusion to the buffer pool
@@ -10,10 +16,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define N 5
-
+int N;
 int in = 0, out = 0;
-int buffer[N];
+int *buffer;
 sem_t *mutex, *empty, *full;
 pthread_t producer_thread_id, consumer_thread_id;
 
@@ -31,14 +36,13 @@ void *producer() {
         // add item to buffer
         buffer[in] = item;
         in = (in + 1) % N;
+        printf("Produced item: %d\n", item);
 
         // signal mutex
         sem_post(mutex);
 
         // signal full
         sem_post(full);
-
-        printf("Produced item: %d\n", item);
     }
     pthread_exit(NULL);
     return NULL;
@@ -69,7 +73,14 @@ void *consumer() {
     return NULL;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "usage: %s <N>\n", argv[0]);
+        exit(1);
+    }
+
+    N = atoi(argv[1]);
+    buffer = malloc(sizeof(int) * N);
     mutex = sem_open("mutex", O_CREAT, 0644, 1);
     empty = sem_open("empty", O_CREAT, 0644, N);
     full = sem_open("full", O_CREAT, 0644, 0);
@@ -88,5 +99,7 @@ int main() {
 
     sem_unlink("full");
     sem_close(full);
+
+    free(buffer);
     return 0;
 }
