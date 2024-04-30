@@ -81,9 +81,24 @@ int main(int argc, char *argv[]) {
 
     N = atoi(argv[1]);
     buffer = malloc(sizeof(int) * N);
+
     mutex = sem_open("mutex", O_CREAT, 0644, 1);
+    if (mutex == SEM_FAILED) {
+        sem_unlink("mutex");
+        mutex = sem_open("mutex", O_CREAT, 0644, 1);
+    }
+
     empty = sem_open("empty", O_CREAT, 0644, N);
+    if (empty == SEM_FAILED) {
+        sem_unlink("empty");
+        empty = sem_open("empty", O_CREAT, 0644, 1);
+    }
+
     full = sem_open("full", O_CREAT, 0644, 0);
+    if (full == SEM_FAILED) {
+        sem_unlink("full");
+        full = sem_open("full", O_CREAT, 0644, 1);
+    }
 
     pthread_create(&producer_thread_id, NULL, producer, NULL);
     pthread_create(&consumer_thread_id, NULL, consumer, NULL);
