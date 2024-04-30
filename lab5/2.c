@@ -41,10 +41,11 @@ int main() {
 }
 
 void *go(void *arg) {
-    printf("Thread %d is now attempting ....\n", (int)arg);
+    printf("Thread %d is now attempting ....\n", (int)(unsigned long)arg);
     pthread_mutex_lock(&mutex);
     sleep(1);
-    printf("Thread %d is running in its Critical Section........\n", (int)arg);
+    printf("Thread %d is running in its Critical Section........\n",
+           (int)(unsigned long)arg);
     pthread_mutex_unlock(&mutex);
     pthread_exit(0);
 }
