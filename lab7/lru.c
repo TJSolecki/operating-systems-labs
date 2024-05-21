@@ -1,3 +1,9 @@
+// Name: Thomas Solecki
+// Date: 5/21/2024
+// Title: Lab7 – Step 3
+// Description: This program simulates the efficiency of the LRU page
+// replacement algorithm
+
 #include <limits.h>
 #include <stdint.h>
 #include <stdio.h>

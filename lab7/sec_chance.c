@@ -1,3 +1,9 @@
+// Name: Thomas Solecki
+// Date: 5/21/2024
+// Title: Lab7 – Step 3
+// Description: This program simulates the efficiency of the second chance page
+// replacement algorithm
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
