@@ -1,3 +1,8 @@
+// Name: Thomas Solecki
+// Date: 5/21/2024
+// Title: Lab7 – Step 2
+// Description: This program generates a test input for the page replacement
+// algorithm tests
 
 #include <stdio.h>
 #include <stdlib.h>

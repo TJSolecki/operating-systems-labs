@@ -54,6 +54,5 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("%d Total Page Faults", totalFaults);
     return 0;
 }

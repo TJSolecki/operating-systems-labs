@@ -1,15 +1,15 @@
 #!/bin/bash
 make;
 echo "----------FIFO----------"
-cat testInput.txt | ./fifo 10
+cat testInput.txt | ./fifo 3
 echo "----------End FIFO----------"
 echo
 echo "----------LRU----------"
-cat testInput.txt | ./lru 10
+cat testInput.txt | ./lru 3
 echo "----------End LRU----------"
 echo
 echo "----------Second Chance----------"
-cat testInput.txt | ./sec_chance 10
+cat testInput.txt | ./sec_chance 3
 echo "----------End Second Chance----------"
 echo "FIFO 10K Test with cache size = 10, 50, 100, 250, 500"
 cat testInput10k.txt | ./fifo 10 | wc -l

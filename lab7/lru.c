@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
 
     for (i = 0; i < C_SIZE; i++) { // initialise cache array
         cache[i].pageno = -1;
+        cache[i].last_used = -1;
     }
 
     while (fgets(pageCache, 100, stdin)) {
@@ -78,6 +79,5 @@ int main(int argc, char *argv[]) {
         counter++;
     }
 
-    printf("%d Total Page Faults", totalFaults);
     return 0;
 }
